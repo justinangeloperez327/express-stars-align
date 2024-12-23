@@ -9,11 +9,15 @@ const employeeSchema = new mongoose.Schema(
     },
     firstName: {
       type: String,
-      required: true,
+      required: false,
+    },
+    middleName: {
+      type: String,
+      required: false,
     },
     lastName: {
       type: String,
-      required: true,
+      required: false,
     },
     experience: [
       {
@@ -23,7 +27,7 @@ const employeeSchema = new mongoose.Schema(
         },
         skills: {
           type: [String], // Array of skills
-          required: true,
+          required: false,
         },
         company: {
           type: String,
@@ -55,11 +59,7 @@ const employeeSchema = new mongoose.Schema(
         },
         degree: {
           type: String,
-          required: true,
-        },
-        fieldOfStudy: {
-          type: String,
-          required: true,
+          required: false,
         },
         startDate: {
           type: Date,

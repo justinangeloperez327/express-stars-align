@@ -243,7 +243,20 @@ const getProfile = async (req, res, next) => {
         res.status(404).json({ message: "Employee not found" });
       }
 
-      res.status(200).json({ user, employee });
+      const profile = {
+        email: user.email,
+        role: user.role,
+        firstName: employee.firstName ?? null,
+        lastName: employee.lastName ?? null,
+        middleName: employee.middleName ?? null,
+        experience: employee.experience ?? [],
+        skills: employee.skills ?? [],
+        education: employee.education ?? [],
+        appliedJobs: employee.appliedJobs ?? [],
+      };
+
+      res.status(200).json({ profile });
+
     } else if (user.role === 'employer') {
       const employer = await Employer.findOne({ user: userId });
 
