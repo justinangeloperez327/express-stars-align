@@ -54,6 +54,9 @@ const registerEmployee = async (req, res, next) => {
       res.status(400).json({ error: "User not created" });
     }
 
+    const employee = new Employee({ user: user._id });
+    await employee.save();
+
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     next(error);
