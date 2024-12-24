@@ -37,16 +37,16 @@ const getDashboardData = async (req, res, next) => {
 
       const applications = await Application.find({ company: company._id });
       const totalApplications = applications.length;
-      const totalViewedApplications = applications.filter(application => application.status === "viewed").length;
-      const totalPendingApplications = applications.filter(application => application.status === "pending").length;
+      const totalAccepted = applications.filter(application => application.status === "accepted").length;
+      const totalRejected = applications.filter(application => application.status === "rejected").length;
 
       return res.status(200).json({
         totalJobs,
         totalActiveJobs,
         totalCloseJobs,
         totalApplications,
-        totalViewedApplications,
-        totalPendingApplications
+        totalAccepted,
+        totalRejected
       });
     }
 

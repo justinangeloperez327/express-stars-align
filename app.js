@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const errorHandler = require('./utils/errorHandlers');
 const cors = require('cors');
-const userRoutes = require('./routes/userRoutes');
+
 const authRoutes = require('./routes/authRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
@@ -23,7 +23,6 @@ app.use(cors({
 }));
 
 app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/dashboard', dashboardRoutes);

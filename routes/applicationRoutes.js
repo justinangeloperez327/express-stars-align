@@ -11,6 +11,8 @@ router.get('/', auth, applicationController.getAllApplications);
 router.post('/', upload.single('resume'), auth, employee, applicationController.createApplication);
 router.get('/:id', auth, applicationController.getApplication);
 router.put('/:id', auth, applicationController.updateApplication);
+router.put('/:id/accept', auth, employer, applicationController.acceptApplication);
+router.put('/:id/reject', auth, employer, applicationController.rejectApplication);
 router.delete('/:id', auth, applicationController.deleteApplication);
 
 module.exports = router;

@@ -1,5 +1,4 @@
 const Employer = require("../models/employer");
-const User = require("../models/user");
 
 const getAllEmployers = async (req, res) => {
   try {
@@ -32,13 +31,11 @@ const updateEmployer = async (req, res) => {
       description,
       industry,
       size,
-      website,
       logo,
       location,
       vision,
       mission,
       ourValues,
-      gallery,
     } = req.body;
 
     const employer = await Employer.findByIdAndUpdate(employerId, {
@@ -46,13 +43,11 @@ const updateEmployer = async (req, res) => {
       description,
       industry,
       size,
-      website,
       logo,
       location,
       vision,
       mission,
       ourValues,
-      gallery,
     });
 
     res.status(200).json(employer);

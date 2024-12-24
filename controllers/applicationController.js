@@ -7,23 +7,13 @@ const path = require('path');
 
 const getAllApplications = async (req, res, next) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
 
     if (req.role === "employee") {
       const applications = await Application.find({ applicant: req.userId })
-        .populate("job", "company")
-        .skip(skip)
-        .limit(limit);
+        .populate("job")
+        .populate("company");
 
-
-      const totalApplications = await Application.countDocuments({ applicant: req.userId });
-      return res.status(200).json({
-        applications,
-        totalPages: Math.ceil(totalApplications / limit),
-        currentPage: page,
-      });
+      return res.status(200).json(applications);
     }
 
     if (req.role === "employer") {
@@ -35,17 +25,8 @@ const getAllApplications = async (req, res, next) => {
 
       const applications = await Application.find({ company: company._id })
         .populate('job')
-        .populate('user', 'email')
-        .skip(skip)
-        .limit(limit);
-
-      const totalApplications = await Application.countDocuments({ company: company._id });
-
-      return res.status(200).json({
-        applications,
-        totalPages: Math.ceil(totalApplications / limit),
-        currentPage: page,
-      });
+        .populate('user', 'email');
+      return res.status(200).json(applications);
     }
 
     return res.status(403).json({ message: "Unauthorized" });
@@ -63,16 +44,15 @@ const getApplication = async (req, res, next) => {
       res.status(404).json({ message: "Application not found" });
     }
 
-    if (user.role === "employee") {
+    if (req.role === "employee") {
       const url = cloudinary.url(`resume/${application}.pdf`, {
         resource_type: 'raw',
         type: 'authenticated',
         sign_url: true
       });
     }
-    res.status(200).json([
-      application
-    ]);
+
+    res.status(200).json(application);
   } catch (error) {
     next(error);
   }
@@ -157,10 +137,44 @@ const deleteApplication = async (req, res, next) => {
   }
 }
 
+const acceptApplication = async (req, res, next) => {
+  try {
+    const applicationId = req.params.id;
+    const application = await Application.findByIdAndUpdate(applicationId, { status: "accepted" }, { new: true });
+
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
+    res.status(200).json(application);
+  }
+  catch (error) {
+    next(error);
+  }
+}
+
+const rejectApplication = async (req, res, next) => {
+  try {
+    const applicationId = req.params.id;
+    const application = await Application.findByIdAndUpdate(applicationId, { status: "rejected" }, { new: true });
+
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
+    res.status(200).json(application);
+
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getAllApplications,
   getApplication,
   createApplication,
   updateApplication,
-  deleteApplication
+  deleteApplication,
+  acceptApplication,
+  rejectApplication
 };
