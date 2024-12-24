@@ -15,13 +15,13 @@ const employee = async (req, res, next) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // const employee = await Employee.findOne({ user: userId });
+    const employee = await Employee.findOne({ user: userId });
 
-    // if (!employee) {
-    //   return res.status(404).json({ error: 'Employee not found' });
-    // }
+    if (!employee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
 
-    // req.employeeId = employee._id;
+    req.employeeId = employee._id;
 
     next();
   } catch (error) {

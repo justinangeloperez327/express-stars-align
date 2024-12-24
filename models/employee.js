@@ -25,30 +25,18 @@ const employeeSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-        skills: {
-          type: [String], // Array of skills
-          required: false,
-        },
         company: {
-          type: String,
-          required: true,
-        },
-        location: {
           type: String,
           required: true,
         },
         startDate: {
           type: Date,
-          required: true,
+          required: false,
         },
         endDate: {
           type: Date,
           required: false,
         },
-        role: {
-          type: String,
-          required: true,
-        }
       }
     ],
     education: [
@@ -63,7 +51,7 @@ const employeeSchema = new mongoose.Schema(
         },
         startDate: {
           type: Date,
-          required: true,
+          required: false,
         },
         endDate: {
           type: Date,
