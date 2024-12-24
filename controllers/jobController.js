@@ -11,6 +11,7 @@ const getAllJobs = async (req, res, next) => {
       title: { $regex: search || '', $options: 'i' },
       type: { $regex: type || '', $options: 'i' },
       location: { $regex: location || '', $options: 'i' },
+      deadline: { $gte: new Date() }
     };
 
     if (dateListed) {
