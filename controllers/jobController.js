@@ -13,7 +13,6 @@ const getAllJobs = async (req, res, next) => {
       location: { $regex: location || '', $options: 'i' },
     };
 
-    // Handle the dateListed parameter
     if (dateListed) {
       const now = new Date();
       let dateFrom;
@@ -30,6 +29,7 @@ const getAllJobs = async (req, res, next) => {
           break;
         case 'this-year':
           dateFrom = new Date(now.getFullYear(), 0, 1);
+          break;
         default:
           dateFrom = new Date(dateListed);
       }
@@ -37,10 +37,9 @@ const getAllJobs = async (req, res, next) => {
       filter.createdAt = { $gte: dateFrom };
     }
 
-
     const jobs = await Job.find(filter).populate('company');
 
-    res.status(200).json(jobs);
+    return res.status(200).json(jobs);
   } catch (error) {
     next(error);
   }
@@ -243,6 +242,7 @@ const getAppliedJobs = async (req, res, next) => {
           break;
         case 'this-year':
           dateFrom = new Date(now.getFullYear(), 0, 1);
+          break;
         default:
           dateFrom = new Date(dateListed);
       }
